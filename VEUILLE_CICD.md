@@ -273,3 +273,144 @@ Une fois uv installé et le cache configuré, on peut :
 ```
 
 ---
+### 🚀 Mission 3 : Comprendre Semantic Release (30min)
+
+**Ressources obligatoires :**  
+- 📖 Conventional Commits  
+- 📖 Conventional Commits – Gist  
+- 📖 Python Semantic Release  
+
+---
+
+## 1️⃣ Qu'est-ce que le versionnage sémantique (SemVer) ?
+
+Le **versionnage sémantique** est une manière standardisée de numéroter les versions d’un logiciel suivant le format :
+
+```
+MAJOR.MINOR.PATCH
+```
+
+### 🔢 Signification
+
+- **MAJOR** : changements incompatibles (breaking changes)  
+- **MINOR** : nouvelles fonctionnalités rétro-compatibles  
+- **PATCH** : corrections de bugs sans changement majeur ni ajout de fonctionnalités  
+
+### ⬆️ Quand bumper chaque niveau ?
+
+| Type de changement | Exemple | Niveau |
+|------------------|---------|--------|
+| Rupture de compatibilité | suppression d’une API | MAJOR |
+| Nouvelle fonctionnalité | ajout d’un endpoint | MINOR |
+| Bugfix | correction d’un crash | PATCH |
+
+---
+
+## 2️⃣ Qu'est-ce que Conventional Commits ?
+
+**Conventional Commits** définit un format structuré pour les messages Git afin d’automatiser le versionnage.
+
+Format standard :
+
+```
+type(scope?): description
+```
+
+### 🎭 Types principaux
+
+| Type       | Signification |
+|------------|--------------|
+| **feat**   | nouvelle fonctionnalité → bump MINOR |
+| **fix**    | correction de bug → bump PATCH |
+| **docs**   | documentation |
+| **style**  | formatage, pas de logique |
+| **refactor** | amélioration interne sans changement fonctionnel |
+| **test**   | tests |
+| **perf**   | optimisation |
+| **ci** / **build** | pipeline, build system |
+
+### 💥 Impact sur SemVer
+
+- **feat** → MINOR  
+- **fix** → PATCH  
+- **BREAKING CHANGE** dans le corps → MAJOR  
+
+Exemple :
+
+```
+feat: add user authentication
+
+BREAKING CHANGE: login endpoint renamed
+```
+
+Cela déclenche automatiquement un bump MAJOR.
+
+---
+
+## 3️⃣ Comment fonctionne python-semantic-release ?
+
+**python-semantic-release** automatise :
+
+1. le versionnage  
+2. la génération du changelog  
+3. la création des tags Git  
+4. la publication GitHub et PyPI  
+
+---
+
+### 🛠️ Configuration dans `pyproject.toml`
+
+Exemple minimal :
+
+```toml
+[tool.semantic_release]
+version_variable = "package/__init__.py:__version__"
+branch = "main"
+changelog_file = "CHANGELOG.md"
+upload_to_pypi = false
+upload_to_release = true
+build_command = "python -m build"
+```
+
+---
+
+### 🧾 Génération du CHANGELOG
+
+Semantic Release :
+
+- lit l’historique Git  
+- détecte le type des commits  
+- regroupe les changements : feat, fix, breaking  
+- met à jour automatiquement `CHANGELOG.md`  
+
+Exemple de section :
+
+```
+## 1.4.0 - 2024-11-01
+
+### Features
+- Add loan predictor (feat)
+
+### Fixes
+- Correct environment variable loading (fix)
+```
+
+---
+
+### 🏷️ Création des releases GitHub
+
+Lorsqu'il est exécuté dans CI :
+
+- crée automatiquement un **tag Git**
+- crée un **GitHub Release**
+- ajoute le changelog généré dans la release
+- peut publier les artefacts (wheel, sdist) selon config
+
+Workflow minimal :
+
+```yaml
+- name: Run Semantic Release
+  run: semantic-release publish
+```
+
+---
