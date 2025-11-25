@@ -77,3 +77,199 @@ Le **CD** automate les étapes après la CI : tests avancés, packaging, déploi
 - Moins de conflits entre branches  
 - Transparence et communication fluide  
 - Travail aligné grâce aux pipelines automatisés  
+
+### 🧪 Mission 2 : Maîtriser **uv** (1h)
+
+**Ressources obligatoires** :  
+- 📖 Documentation officielle uv  
+- 📖 uv – GitHub Integration  
+- 📖 uv – Build Backend  
+- 🎥 uv Tutorial  
+
+---
+
+## 1️⃣ Qu'est-ce que **uv** ?
+
+### 🔍 Définition
+
+**uv** est un outil tout‑en‑un pour l’écosystème Python qui combine plusieurs rôles :
+
+- gestionnaire de dépendances
+- gestionnaire d’environnements virtuels
+- outil d’exécution de commandes (scripts, tests, etc.)
+- backend de build pour les projets Python modernes
+
+Il s’appuie fortement sur **pyproject.toml** et vise à être **rapide**, **reproductible** et simple à intégrer dans des workflows automatisés (CI/CD).
+
+---
+
+### 🆚 Différences avec pip / poetry / pipenv
+
+| Outil      | Rôle principal                                      | Points clés |
+|-----------|------------------------------------------------------|------------|
+| **pip**   | Installer des paquets à partir de PyPI              | Gère les paquets mais pas les environnements ni le lock par défaut |
+| **pipenv**| Gestion dépendances + environnements virtualenv      | Crée un `Pipfile` et des venvs automatiquement |
+| **poetry**| Gestion complète des projets et dépendances          | Utilise `pyproject.toml`, gère versions, build et publication |
+| **uv**    | Gestionnaire **polyvalent** et ultra rapide          | Combine gestion de deps, environnements, exécution & build backend via `pyproject.toml` |
+
+En résumé :  
+- **pip** = installation “de base”  
+- **poetry/pipenv** = gestion de projet haut niveau  
+- **uv** = approche moderne, unifiée, orientée performance et CI/CD.
+
+---
+
+### ✅ Avantages de uv
+
+- **Performance** : installation et résolution de dépendances très rapides.  
+- **Approche unifiée** : un seul outil pour gérer :
+  - dépendances
+  - environnements
+  - commandes (tests, lint, scripts)
+  - build backend
+- **Intégration moderne** :
+  - basé sur `pyproject.toml`
+  - bien adapté aux pipelines CI/CD
+- **Reproductibilité** :
+  - gestion de fichiers de lock
+  - versions figées pour avoir le même environnement en local et en CI.
+
+---
+
+## 2️⃣ Comment uv fonctionne avec `pyproject.toml` ?
+
+### 🧱 Structure du fichier
+
+`pyproject.toml` est le fichier central de configuration du projet. Avec **uv**, on y trouve typiquement :
+
+```toml
+[project]
+name = "mon-projet"
+version = "0.1.0"
+description = "Exemple de projet avec uv"
+readme = "README.md"
+requires-python = ">=3.10"
+
+[project.dependencies]
+# dépendances principales
+numpy = "^1.26"
+pydantic = "^2.0"
+
+[project.optional-dependencies]
+dev = [
+  "pytest",
+  "ruff",
+]
+
+[build-system]
+requires = ["uv"]
+build-backend = "uv.build"
+```
+
+> La syntaxe exacte peut varier, mais l’idée est : **uv lit et gère tout via `pyproject.toml`**.
+
+---
+
+### 📦 Gestion des dépendances (sections)
+
+- `[project.dependencies]` : dépendances **runtime** utilisées par l’application.  
+- `[project.optional-dependencies]` : groupes de dépendances (ex : `dev`, `test`, `docs`).  
+- uv permet d’installer :
+  - seulement les dépendances de base  
+  - ou un groupe (ex : `dev`) pour le développement.
+
+Exemple de commandes (style général) :
+
+```bash
+uv add numpy
+uv add pytest --group dev
+```
+
+---
+
+### 🏗️ Build backend avec uv
+
+Dans la section `[build-system]` :
+
+```toml
+[build-system]
+requires = ["uv"]
+build-backend = "uv.build"
+```
+
+Cela signifie que :
+
+- **uv** est utilisé pour construire le paquet (wheel, sdist, etc.)  
+- les commandes de build (ex : dans CI/CD) utilisent uv comme moteur unifié.
+
+Avantages :
+
+- configuration centralisée
+- build cohérent entre local et CI
+- moins de dépendances externes (pas besoin de `setuptools` + `wheel` + autre outil).
+
+---
+
+## 3️⃣ Comment utiliser uv dans GitHub Actions ?
+
+### ⚙️ Installation de uv
+
+Dans un workflow GitHub Actions, on ajoute une étape d’installation, par exemple :
+
+```yaml
+- name: Install uv
+  run: |
+    curl -LsSf https://astral.sh/uv/install.sh | sh
+```
+
+ou via un binaire déjà fourni selon la doc officielle.
+
+---
+
+### 🗄️ Cache des dépendances
+
+Pour accélérer les workflows CI, on met en cache :
+
+- le **répertoire de cache** de uv  
+- ou le **fichier de lock** associé aux dépendances.
+
+Exemple (générique) :
+
+```yaml
+- name: Cache uv
+  uses: actions/cache@v4
+  with:
+    path: ~/.cache/uv
+    key: ${{ runner.os }}-uv-${{ hashFiles('pyproject.toml') }}
+```
+
+Ainsi, si `pyproject.toml` n’a pas changé, les dépendances ne seront pas réinstallées depuis zéro.
+
+---
+
+### ▶️ Exécution de commandes avec uv
+
+Une fois uv installé et le cache configuré, on peut :
+
+1. Installer les dépendances :
+
+```yaml
+- name: Install dependencies
+  run: uv sync
+```
+
+2. Exécuter des commandes (tests, lint, etc.) :
+
+```yaml
+- name: Run tests
+  run: uv run pytest
+```
+
+3. Construire le paquet (build backend) :
+
+```yaml
+- name: Build package
+  run: uv build
+```
+
+---
