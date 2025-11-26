@@ -33,3 +33,6 @@ coverage.xml
 # MkDocs generated docs
 site/
 docs/docsIA/
+
+# Example environment variables file
+.env
