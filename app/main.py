@@ -5,7 +5,7 @@ from app.database import engine
 from app.routes import items_router
 
 DEBUG_MODE = True
-UNUSED_VAR = "cette variable n'est jamais utilisée"
+
 
 
 @asynccontextmanager
