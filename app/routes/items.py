@@ -81,6 +81,3 @@ def delete_item(
         )
 
 
-def _old_helper_function(data: str) -> str:
-    """Cette fonction n'est plus utilisée mais n'a pas encore été supprimée."""
-    return data.upper()
