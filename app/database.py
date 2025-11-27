@@ -21,4 +21,3 @@ def get_db() -> Generator[Session]:
     """Fournit une session de base de données."""
     with Session(engine) as session:
         yield session
-
