@@ -327,6 +327,19 @@ wheels = [
 ]
 
 [[package]]
+name = "detect-secrets"
+version = "1.4.0"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "pyyaml" },
+    { name = "requests" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/f1/55/292f9ce52bba7f3df0a9cde65dabf458d3aeec6a63bf737e5a5fa9fe6d31/detect_secrets-1.4.0.tar.gz", hash = "sha256:d56787e339758cef48c9ccd6692f7a094b9963c979c9813580b0169e41132833", size = 94954, upload-time = "2022-10-04T19:56:29.992Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/eb/7c/62598477d038f9411d273cec69be35f7b9d607f002a16098f488c0474d77/detect_secrets-1.4.0-py3-none-any.whl", hash = "sha256:d08ecabeee8b68c0acb0e8a354fb98d822a653f6ed05e520cead4c6fc1fc02cd", size = 116331, upload-time = "2022-10-04T19:56:27.926Z" },
+]
+
+[[package]]
 name = "diagrams"
 version = "0.24.4"
 source = { registry = "https://pypi.org/simple" }
@@ -1550,6 +1563,7 @@ dependencies = [
 [package.dev-dependencies]
 dev = [
     { name = "bandit" },
+    { name = "detect-secrets" },
     { name = "diagrams" },
     { name = "mypy" },
     { name = "pytest" },
@@ -1569,6 +1583,7 @@ requires-dist = [
 [package.metadata.requires-dev]
 dev = [
     { name = "bandit", specifier = ">=1.7.10" },
+    { name = "detect-secrets", specifier = "==1.4.0" },
     { name = "diagrams", specifier = ">=0.24.4" },
     { name = "mypy", specifier = ">=1.18.2" },
     { name = "pytest", specifier = ">=9.0.1" },
