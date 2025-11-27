@@ -1,4 +1,5 @@
 import os
+from collections.abc import AsyncIterator
 from contextlib import asynccontextmanager
 
 from fastapi import FastAPI
@@ -9,10 +10,13 @@ from app.routes import items_router
 
 DEBUG_MODE = True
 
+SECRET_KEY = os.getenv("SECRET_KEY", "placeholder-secret")
+API_KEY = os.getenv("API_KEY", "placeholder-api-key")
 
 
 @asynccontextmanager
-async def lifespan(fastapi_app: FastAPI):
+async def lifespan(fastapi_app: FastAPI) -> AsyncIterator[None]:
+    """Contexte de vie de l'application (création des tables au démarrage)."""
     SQLModel.metadata.create_all(engine)
     yield
 
@@ -28,17 +32,13 @@ app.include_router(items_router)
 
 
 @app.get("/")
-def root():
+def root() -> dict[str, str]:
     return {"message": "Items CRUD API"}
 
 
 @app.get("/health")
-def health():
+def health() -> dict[str, str]:
     return {"status": "healthy"}
-
-
-SECRET_KEY = os.getenv("SECRET_KEY")
-API_KEY = os.getenv("API_KEY")
 
 
 very_long_variable_name_that_exceeds_line_length = (
