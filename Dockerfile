@@ -2,27 +2,25 @@ FROM python:3.13-slim
 
 WORKDIR /app
 
-# System deps
+# Install system dependencies
 RUN apt-get update && apt-get install -y \
     gcc \
     libpq-dev \
-    postgresql-client \
     curl \
     && rm -rf /var/lib/apt/lists/*
 
 # Install uv
 COPY --from=ghcr.io/astral-sh/uv:latest /uv /usr/local/bin/uv
 
-# Copy only the dependency file first (cache layer)
-COPY pyproject.toml .
+# Copy project files
+COPY pyproject.toml uv.lock ./
 
-# Install project dependencies (prod only)
+# Install dependencies (prod only)
 RUN uv sync --frozen --no-dev --no-cache
 
-# Copy the rest of the app
+# Copy application source code
 COPY . .
 
 EXPOSE 8000
 
-# FastAPI via uvicorn (classique) — ou garde fastapi CLI si tu préfères
-CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000"]
+CMD ["fastapi", "run", "app/main.py", "--port", "8000"]
