@@ -1,23 +1,22 @@
-"""Configuration de la base de données et gestion des sessions.
-
-Ce module gère la connexion à la base de données PostgreSQL
-et fournit une fonction générateur pour obtenir des sessions de base de données.
-"""
+"""Database configuration."""
 
 import os
 from collections.abc import Generator
 
 from sqlmodel import Session, create_engine
 
-DATABASE_URL = os.getenv(
-    "DATABASE_URL",
-    "postgresql://postgres:postgres@localhost:5432/items_db",
-)
+# 👉 Si DATABASE_URL n'est pas définie, on utilise SQLite dans un fichier local.
+DATABASE_URL = os.getenv("DATABASE_URL", "sqlite:///./app.db")
 
-engine = create_engine(DATABASE_URL, echo=True)
+connect_args: dict[str, object] = {}
+if DATABASE_URL.startswith("sqlite"):
+    # Option nécessaire pour SQLite avec SQLAlchemy dans certains contextes
+    connect_args = {"check_same_thread": False}
+
+engine = create_engine(DATABASE_URL, connect_args=connect_args)
 
 
 def get_db() -> Generator[Session]:
-    """Fournit une session de base de données."""
+    """Provide a database session."""
     with Session(engine) as session:
         yield session
