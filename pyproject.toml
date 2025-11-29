@@ -24,6 +24,7 @@ dev = [
     "bandit>=1.7.10",
     "safety>=3.2.0",
     "detect-secrets==1.4.0",
+    "semantic-release>=0.1.0",
 ]
 
 [tool.pytest.ini_options]
@@ -59,3 +60,20 @@ warn_return_any = true
 warn_unused_configs = true
 disallow_untyped_defs = true
 plugins = ["sqlalchemy.ext.mypy.plugin"]
+
+
+[tool.semantic_release]
+version_source = "commit"
+major_on_zero = false
+tag_format = "v{version}"
+
+[tool.semantic_release.branches]
+main = true
+develop = false
+
+[tool.semantic_release.commit_parser]
+version = "angular"
+
+[tool.semantic_release.publish]
+# ici on ne publie que sur GitHub (pas de PyPI)
+github = true
