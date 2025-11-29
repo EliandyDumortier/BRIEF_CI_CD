@@ -10,26 +10,29 @@ jobs:
     runs-on: ubuntu-latest
 
     permissions:
-      contents: write      # pour créer des tags / releases
+      contents: write      # créer les tags et les releases
       id-token: write
-      packages: write
+      pull-requests: write
 
     steps:
       - name: Checkout
         uses: actions/checkout@v4
         with:
-          fetch-depth: 0   # important pour les tags
+          fetch-depth: 0    # important pour semantic-release
 
-      - name: Set up uv
-        uses: astral-sh/setup-uv@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
         with:
-          enable-cache: true
-          cache-dependency-glob: "uv.lock"
+          python-version: "3.13"
 
       - name: Install dependencies
-        run: uv sync --group dev
+        run: |
+          pip install --upgrade pip
+          pip install python-semantic-release
 
       - name: Run semantic-release
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: uv run semantic-release version
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: semantic-release version --noop --skip-build --skip-publish
+        # Quand tu voudras la vraie release, tu pourras changer en :
+        # run: semantic-release publish
