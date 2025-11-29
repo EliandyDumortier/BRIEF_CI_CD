@@ -8,7 +8,7 @@ on:
 
 env:
   REGISTRY: ghcr.io
-  IMAGE_NAME: ${{ github.repository_owner }}/fastapi-ci-cd
+  IMAGE_NAME: eliandydumortier/fastapi-ci-cd   # ✅ ALWAYS LOWERCASE
 
 jobs:
   build-and-push:
@@ -18,31 +18,27 @@ jobs:
       packages: write
 
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
+      # Checkout
+      - uses: actions/checkout@v4
 
-      - name: Ensure lowercase image name
-        id: image
-        run: |
-          IMAGE="${{ env.IMAGE_NAME }}"
-          echo "IMAGE_NAME=${IMAGE,,}" >> $GITHUB_ENV
+      # Enable Buildx
+      - uses: docker/setup-buildx-action@v3
 
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v3
-
-      - name: Log in to GitHub Container Registry
-        uses: docker/login-action@v3
+      # Login to GHCR
+      - uses: docker/login-action@v3
         with:
           registry: ${{ env.REGISTRY }}
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
+      # Create tags and labels
       - name: Extract Docker metadata
         id: meta
         uses: docker/metadata-action@v5
         with:
           images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
 
+      # Build & Push
       - name: Build and push Docker image
         uses: docker/build-push-action@v6
         with:
