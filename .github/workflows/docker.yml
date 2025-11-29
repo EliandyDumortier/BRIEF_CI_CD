@@ -3,15 +3,20 @@ name: Build & Push Docker Image
 on:
   push:
     branches:
-      - develop          # build the image on every push to develop
-  workflow_dispatch:      # allow manual runs
+      - develop          # build l'image à chaque push sur develop
+  workflow_dispatch:     # possibilité de lancer manuellement
+
+env:
+  REGISTRY: ghcr.io
+  IMAGE_OWNER: eliandydumortier   # ⚠ en dur, tout en minuscules
+  IMAGE_NAME: fastapi-ci-cd
 
 jobs:
   build:
     runs-on: ubuntu-latest
     permissions:
       contents: read
-      packages: write     # needed to push to GHCR
+      packages: write   # nécessaire pour publier sur GHCR
       id-token: write
 
     steps:
@@ -24,7 +29,7 @@ jobs:
       - name: Log in to GHCR
         uses: docker/login-action@v3
         with:
-          registry: ghcr.io
+          registry: ${{ env.REGISTRY }}
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
@@ -35,8 +40,8 @@ jobs:
           context: .
           push: true
           tags: |
-            ghcr.io/${{ toLower(github.repository_owner) }}/fastapi-ci-cd:latest
-            ghcr.io/${{ toLower(github.repository_owner) }}/fastapi-ci-cd:${{ github.sha }}
+            ${{ env.REGISTRY }}/${{ env.IMAGE_OWNER }}/${{ env.IMAGE_NAME }}:latest
+            ${{ env.REGISTRY }}/${{ env.IMAGE_OWNER }}/${{ env.IMAGE_NAME }}:${{ github.sha }}
 
       - name: Show image digest
         run: echo "Image digest ${{ steps.build.outputs.digest }}"
