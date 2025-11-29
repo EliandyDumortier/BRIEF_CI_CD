@@ -3,15 +3,15 @@ name: Build & Push Docker Image
 on:
   push:
     branches:
-      - develop   # on build l'image à chaque push sur develop
-  workflow_dispatch:  # pour lancer manuellement
+      - develop          # build the image on every push to develop
+  workflow_dispatch:      # allow manual runs
 
 jobs:
   build:
     runs-on: ubuntu-latest
     permissions:
       contents: read
-      packages: write   # nécessaire pour publier GHCR
+      packages: write     # needed to push to GHCR
       id-token: write
 
     steps:
@@ -29,13 +29,14 @@ jobs:
           password: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Build and push
+        id: build
         uses: docker/build-push-action@v5
         with:
           context: .
           push: true
           tags: |
-            ghcr.io/${{ github.repository_owner }}/fastapi-ci-cd:latest
-            ghcr.io/${{ github.repository_owner }}/fastapi-ci-cd:${{ github.sha }}
+            ghcr.io/${{ toLower(github.repository_owner) }}/fastapi-ci-cd:latest
+            ghcr.io/${{ toLower(github.repository_owner) }}/fastapi-ci-cd:${{ github.sha }}
 
       - name: Show image digest
         run: echo "Image digest ${{ steps.build.outputs.digest }}"
