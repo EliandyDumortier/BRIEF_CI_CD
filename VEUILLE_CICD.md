@@ -2,8 +2,8 @@
 
 #### **Mission 1 : Comprendre CI/CD (1h)**
 
-**Ressources obligatoires** :  
-- 📖 [Red Hat - Qu'est-ce que la CI/CD ?](https://www.redhat.com/fr/topics/devops/what-is-ci-cd)  
+**Ressources obligatoires** :
+- 📖 [Red Hat - Qu'est-ce que la CI/CD ?](https://www.redhat.com/fr/topics/devops/what-is-ci-cd)
 - 🎥 [GitHub Actions Tutorial](https://www.youtube.com/watch?v=R8_veQiYBjI) (30min)
 
 ---
@@ -18,20 +18,20 @@
 La **CI** est une pratique DevOps où les développeurs intègrent fréquemment leur code dans un dépôt partagé. Chaque intégration déclenche des build et des tests automatiques.
 
 ### **🎯 Problèmes résolus**
-- Réduction des conflits d’intégration  
-- Détection rapide des bugs  
-- Build automatisés → moins d’erreurs humaines  
-- Amélioration de la stabilité du code  
+- Réduction des conflits d’intégration
+- Détection rapide des bugs
+- Build automatisés → moins d’erreurs humaines
+- Amélioration de la stabilité du code
 
 ### **🧩 Principes clés**
-- Intégrer souvent (plusieurs fois par jour)  
-- Automatiser les tests et le build  
-- Maintenir une branche principale stable  
-- Fournir un feedback rapide aux développeurs  
+- Intégrer souvent (plusieurs fois par jour)
+- Automatiser les tests et le build
+- Maintenir une branche principale stable
+- Fournir un feedback rapide aux développeurs
 
 ### **🛠️ Exemples d’outils CI**
-- **GitHub Actions**  
-- **Jenkins**  
+- **GitHub Actions**
+- **Jenkins**
 - **GitLab CI/CD**
 
 ---
@@ -49,42 +49,42 @@ Le **CD** automate les étapes après la CI : tests avancés, packaging, déploi
 | Plus prudent, plus contrôlé | Plus rapide, nécessite une confiance totale dans les tests |
 
 ### **⚖️ Bénéfices**
-- Déploiements plus rapides  
-- Réduction des risques (petites modifications fréquentes)  
-- Automatisation des processus → moins d’erreurs  
+- Déploiements plus rapides
+- Réduction des risques (petites modifications fréquentes)
+- Automatisation des processus → moins d’erreurs
 
 ### **⚠️ Risques**
-- Mauvaise qualité des tests → bugs en production  
-- Pipeline mal configuré → interruptions possibles  
-- Nécessite une culture DevOps solide  
+- Mauvaise qualité des tests → bugs en production
+- Pipeline mal configuré → interruptions possibles
+- Nécessite une culture DevOps solide
 
 ---
 
 ## **3️⃣ Pourquoi CI/CD est important ?**
 
 ### **💡 Impact sur la qualité du code**
-- Tests automatisés → moins de régressions  
-- Intégration fréquente → code plus propre  
-- Feedback instantané aux développeurs  
+- Tests automatisés → moins de régressions
+- Intégration fréquente → code plus propre
+- Feedback instantané aux développeurs
 
 ### **⚡ Impact sur la vitesse de développement**
-- Moins d’attente entre les étapes  
-- Déploiements rapides et fiables  
-- Livraison continue de nouvelles fonctionnalités  
+- Moins d’attente entre les étapes
+- Déploiements rapides et fiables
+- Livraison continue de nouvelles fonctionnalités
 
 ### **🤝 Impact sur la collaboration en équipe**
-- Standardisation du workflow  
-- Moins de conflits entre branches  
-- Transparence et communication fluide  
-- Travail aligné grâce aux pipelines automatisés  
+- Standardisation du workflow
+- Moins de conflits entre branches
+- Transparence et communication fluide
+- Travail aligné grâce aux pipelines automatisés
 
 ### 🧪 Mission 2 : Maîtriser **uv** (1h)
 
-**Ressources obligatoires** :  
-- 📖 Documentation officielle uv  
-- 📖 uv – GitHub Integration  
-- 📖 uv – Build Backend  
-- 🎥 uv Tutorial  
+**Ressources obligatoires** :
+- 📖 Documentation officielle uv
+- 📖 uv – GitHub Integration
+- 📖 uv – Build Backend
+- 🎥 uv Tutorial
 
 ---
 
@@ -112,16 +112,16 @@ Il s’appuie fortement sur **pyproject.toml** et vise à être **rapide**, **re
 | **poetry**| Gestion complète des projets et dépendances          | Utilise `pyproject.toml`, gère versions, build et publication |
 | **uv**    | Gestionnaire **polyvalent** et ultra rapide          | Combine gestion de deps, environnements, exécution & build backend via `pyproject.toml` |
 
-En résumé :  
-- **pip** = installation “de base”  
-- **poetry/pipenv** = gestion de projet haut niveau  
+En résumé :
+- **pip** = installation “de base”
+- **poetry/pipenv** = gestion de projet haut niveau
 - **uv** = approche moderne, unifiée, orientée performance et CI/CD.
 
 ---
 
 ### ✅ Avantages de uv
 
-- **Performance** : installation et résolution de dépendances très rapides.  
+- **Performance** : installation et résolution de dépendances très rapides.
 - **Approche unifiée** : un seul outil pour gérer :
   - dépendances
   - environnements
@@ -172,10 +172,10 @@ build-backend = "uv.build"
 
 ### 📦 Gestion des dépendances (sections)
 
-- `[project.dependencies]` : dépendances **runtime** utilisées par l’application.  
-- `[project.optional-dependencies]` : groupes de dépendances (ex : `dev`, `test`, `docs`).  
+- `[project.dependencies]` : dépendances **runtime** utilisées par l’application.
+- `[project.optional-dependencies]` : groupes de dépendances (ex : `dev`, `test`, `docs`).
 - uv permet d’installer :
-  - seulement les dépendances de base  
+  - seulement les dépendances de base
   - ou un groupe (ex : `dev`) pour le développement.
 
 Exemple de commandes (style général) :
@@ -199,7 +199,7 @@ build-backend = "uv.build"
 
 Cela signifie que :
 
-- **uv** est utilisé pour construire le paquet (wheel, sdist, etc.)  
+- **uv** est utilisé pour construire le paquet (wheel, sdist, etc.)
 - les commandes de build (ex : dans CI/CD) utilisent uv comme moteur unifié.
 
 Avantages :
@@ -230,7 +230,7 @@ ou via un binaire déjà fourni selon la doc officielle.
 
 Pour accélérer les workflows CI, on met en cache :
 
-- le **répertoire de cache** de uv  
+- le **répertoire de cache** de uv
 - ou le **fichier de lock** associé aux dépendances.
 
 Exemple (générique) :
@@ -275,10 +275,10 @@ Une fois uv installé et le cache configuré, on peut :
 ---
 ### 🚀 Mission 3 : Comprendre Semantic Release (30min)
 
-**Ressources obligatoires :**  
-- 📖 Conventional Commits  
-- 📖 Conventional Commits – Gist  
-- 📖 Python Semantic Release  
+**Ressources obligatoires :**
+- 📖 Conventional Commits
+- 📖 Conventional Commits – Gist
+- 📖 Python Semantic Release
 
 ---
 
@@ -292,9 +292,9 @@ MAJOR.MINOR.PATCH
 
 ### 🔢 Signification
 
-- **MAJOR** : changements incompatibles (breaking changes)  
-- **MINOR** : nouvelles fonctionnalités rétro-compatibles  
-- **PATCH** : corrections de bugs sans changement majeur ni ajout de fonctionnalités  
+- **MAJOR** : changements incompatibles (breaking changes)
+- **MINOR** : nouvelles fonctionnalités rétro-compatibles
+- **PATCH** : corrections de bugs sans changement majeur ni ajout de fonctionnalités
 
 ### ⬆️ Quand bumper chaque niveau ?
 
@@ -331,9 +331,9 @@ type(scope?): description
 
 ### 💥 Impact sur SemVer
 
-- **feat** → MINOR  
-- **fix** → PATCH  
-- **BREAKING CHANGE** dans le corps → MAJOR  
+- **feat** → MINOR
+- **fix** → PATCH
+- **BREAKING CHANGE** dans le corps → MAJOR
 
 Exemple :
 
@@ -351,10 +351,10 @@ Cela déclenche automatiquement un bump MAJOR.
 
 **python-semantic-release** automatise :
 
-1. le versionnage  
-2. la génération du changelog  
-3. la création des tags Git  
-4. la publication GitHub et PyPI  
+1. le versionnage
+2. la génération du changelog
+3. la création des tags Git
+4. la publication GitHub et PyPI
 
 ---
 
@@ -378,10 +378,10 @@ build_command = "python -m build"
 
 Semantic Release :
 
-- lit l’historique Git  
-- détecte le type des commits  
-- regroupe les changements : feat, fix, breaking  
-- met à jour automatiquement `CHANGELOG.md`  
+- lit l’historique Git
+- détecte le type des commits
+- regroupe les changements : feat, fix, breaking
+- met à jour automatiquement `CHANGELOG.md`
 
 Exemple de section :
 

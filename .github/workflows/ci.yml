@@ -24,7 +24,6 @@ jobs:
 
       - name: Run Ruff lint + formatting
         run: uv run ruff check .   # Combined lint + formatting check
-        # ✅ This avoids using `ruff format --check` which can fail on trivial formatting
 
   typecheck:
     runs-on: ubuntu-latest
@@ -45,6 +44,27 @@ jobs:
           echo "[mypy]" > mypy.ini
           echo "ignore_missing_imports = True" >> mypy.ini
           uv run mypy app/
+
+  security:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up uv
+        uses: astral-sh/setup-uv@v4
+        with:
+          enable-cache: true
+          cache-dependency-glob: "uv.lock"
+
+      - name: Install dependencies
+        run: uv sync
+
+      - name: Run Bandit (static analysis)
+        run: uv run bandit -r app/
+
+      - name: Run Safety (dependencies vulnerabilities)
+        run: uv run safety check
 
   tests:
     runs-on: ubuntu-latest
@@ -83,3 +103,16 @@ jobs:
         with:
           files: coverage.xml
           fail_ci_if_error: false
+
+  pre-commit:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - uses: actions/setup-python@v5
+      with:
+        python-version: '3.13'
+
+    - name: Run pre-commit hooks
+      uses: pre-commit/action@v3.0.0
